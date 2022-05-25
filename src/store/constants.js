@@ -1,0 +1,3 @@
+export const SET_TODO_INPUT = 'SET_TODO_INPUT';
+export const ADD_ITEM_TO_TODOS = 'ADD_ITEM_TO_TODOS';
+export const CLEAR_INPUT_FIELD = 'CLEAR_INPUT_FIELD';
