@@ -1,27 +1,21 @@
 import { useState } from 'react';
 import './App.css';
 
-const orders = [12, 13, 14];
+const gifts = ['CPU i9', 'RAM 32GB RGB', 'RGB Keyboard'];
 
 function App() {
-  const [counter, setCounter] = useState(() => {
-    const total = orders.reduce(
-      (accumulatedValue, currentValue) => accumulatedValue + currentValue,
-      0
-    );
+  const [gift, setGift] = useState('');
 
-    return total;
-  });
-
-  const handleClick = () => {
-    setCounter((prevState) => prevState + 1);
+  const handleRandomGift = () => {
+    const index = Math.floor(Math.random() * gifts.length);
+    setGift(gifts[index]);
   };
 
   return (
     <div className="App">
-      <h1>Hello useState</h1>
-      <p>{counter}</p>
-      <button onClick={handleClick}>Count</button>
+      {gift ? <h1>{gift}</h1> : <h1>No gifts</h1>}
+
+      <button onClick={handleRandomGift}>Get reward</button>
     </div>
   );
 }
