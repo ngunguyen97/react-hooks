@@ -9,6 +9,7 @@ const tabs = ['posts', 'comments', 'albums'];
 function Content() {
   const [posts, setPosts] = useState([]);
   const [type, setType] = useState('posts');
+  const [moveTop, setMoveTop] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -19,6 +20,18 @@ function Content() {
     };
     fetchPosts().catch(console.err);
   }, [type]);
+
+  useEffect(() => {
+    const handleScrollEvent = () => {
+      setMoveTop(window.scrollY > 200);
+    };
+
+    window.addEventListener('scroll', handleScrollEvent);
+
+    return () => {
+      window.removeEventListener('scroll', handleScrollEvent);
+    };
+  }, []);
 
   return (
     <>
@@ -33,6 +46,9 @@ function Content() {
           <li key={post.id}>{post.title ?? post.name}</li>
         ))}
       </ul>
+      {moveTop && (
+        <button style={{ position: 'fixed', bottom: 20, right: 20 }}> Move to top</button>
+      )}
     </>
   );
 }
