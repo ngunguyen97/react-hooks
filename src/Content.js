@@ -4,51 +4,25 @@
  */
 
 import { useEffect, useState } from 'react';
-const tabs = ['posts', 'comments', 'albums'];
 
 function Content() {
-  const [posts, setPosts] = useState([]);
-  const [type, setType] = useState('posts');
-  const [moveTop, setMoveTop] = useState(false);
+  const [width, setWidth] = useState(window.innerWidth);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await fetch(`https://jsonplaceholder.typicode.com/${type}`);
-      const postsJson = await response.json();
-
-      setPosts(postsJson);
+    const handleResizeEvent = () => {
+      console.log(window.innerWidth);
+      setWidth(window.innerWidth);
     };
-    fetchPosts().catch(console.err);
-  }, [type]);
-
-  useEffect(() => {
-    const handleScrollEvent = () => {
-      setMoveTop(window.scrollY > 200);
-    };
-
-    window.addEventListener('scroll', handleScrollEvent);
+    window.addEventListener('resize', handleResizeEvent);
 
     return () => {
-      window.removeEventListener('scroll', handleScrollEvent);
+      window.removeEventListener('resize', handleResizeEvent);
     };
   }, []);
 
   return (
     <>
-      <h1>Content Section</h1>
-      {tabs.map((tab) => (
-        <button key={tab} onClick={() => setType(tab)}>
-          {tab}
-        </button>
-      ))}
-      <ul>
-        {posts.map((post) => (
-          <li key={post.id}>{post.title ?? post.name}</li>
-        ))}
-      </ul>
-      {moveTop && (
-        <button style={{ position: 'fixed', bottom: 20, right: 20 }}> Move to top</button>
-      )}
+      <h1>{width}</h1>
     </>
   );
 }
