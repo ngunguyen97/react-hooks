@@ -6,22 +6,25 @@
 import { useEffect, useState } from 'react';
 
 function Content() {
-  const [countdown, setCountDown] = useState(180);
+  const [avatar, setAvatar] = useState();
+
+  const handleAvatarPreview = (e) => {
+    const image = e.target.files;
+
+    if (!image.length) return;
+    setAvatar({ urlSrc: URL.createObjectURL(image[0]) });
+  };
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCountDown((preState) => preState - 1);
-    }, 1000);
-
     return () => {
-      console.log('clear Interval');
-      clearInterval(intervalId);
+      if (avatar) URL.revokeObjectURL(avatar.urlSrc);
     };
-  }, []);
+  }, [avatar]);
 
   return (
     <>
-      <h1>{countdown}</h1>
+      <input type="file" onChange={handleAvatarPreview} accept="image/*" />
+      {avatar && <img src={avatar.urlSrc} alt="" width="80%" />}
     </>
   );
 }
