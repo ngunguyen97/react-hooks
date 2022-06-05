@@ -6,23 +6,22 @@
 import { useEffect, useState } from 'react';
 
 function Content() {
-  const [width, setWidth] = useState(window.innerWidth);
+  const [countdown, setCountDown] = useState(180);
 
   useEffect(() => {
-    const handleResizeEvent = () => {
-      console.log(window.innerWidth);
-      setWidth(window.innerWidth);
-    };
-    window.addEventListener('resize', handleResizeEvent);
+    const intervalId = setInterval(() => {
+      setCountDown((preState) => preState - 1);
+    }, 1000);
 
     return () => {
-      window.removeEventListener('resize', handleResizeEvent);
+      console.log('clear Interval');
+      clearInterval(intervalId);
     };
   }, []);
 
   return (
     <>
-      <h1>{width}</h1>
+      <h1>{countdown}</h1>
     </>
   );
 }
