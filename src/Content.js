@@ -16,28 +16,26 @@
  * 5. Re-render UI
  */
 
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useRef, useState } from 'react';
 
 function Content() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(60);
+  const intervalId = useRef();
+  const handleStart = () => {
+    intervalId.current = setInterval(() => setCount((preState) => preState - 1), 1000);
+    console.log(`setInterval`, intervalId.current);
+  };
 
-  useLayoutEffect(() => {
-    console.log('run useEffect');
-    if (count > 1) {
-      console.log(`useLayoutEffect setCount`);
-      setCount(0);
-    }
-  }, [count]);
-
-  const handleRun = () => {
-    console.log(`handleRun setCount`);
-    setCount((preState) => preState + 1);
+  const handleStop = () => {
+    console.log(`clearInterval`, intervalId.current);
+    clearInterval(intervalId.current);
   };
 
   return (
     <div>
       <h1>{count}</h1>
-      <button onClick={handleRun}>Run</button>
+      <button onClick={handleStart}>Start</button>
+      <button onClick={handleStop}>Stop</button>
     </div>
   );
 }
