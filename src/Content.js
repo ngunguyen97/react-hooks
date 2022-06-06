@@ -1,31 +1,46 @@
 /**
- * memo: Luu cac gia tri qua mot bien ben ngoai.
- * Su dung useCallback phai di kem voi memo
+ * useEffect
+ * 1. Update state
+ * 2. mutated DOM
+ * 3. re-render UI
+ * 4. Call cleanup function if deps were changed.
+ * 5. Call useEffect callback.
  */
 
-import { useEffect, useState } from 'react';
+/**
+ * useLayoutEffect
+ * 1. Update State
+ * 2. Mutated DOM
+ * 3. Call cleanup function if deps were changed.
+ * 4. Call useEffect callback.
+ * 5. Re-render UI
+ */
+
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 function Content() {
-  const [avatar, setAvatar] = useState();
+  const [count, setCount] = useState(0);
 
-  const handleAvatarPreview = (e) => {
-    const image = e.target.files;
+  useLayoutEffect(() => {
+    console.log('run useEffect');
+    if (count > 1) {
+      console.log(`useLayoutEffect setCount`);
+      setCount(0);
+    }
+  }, [count]);
 
-    if (!image.length) return;
-    setAvatar({ urlSrc: URL.createObjectURL(image[0]) });
+  const handleRun = () => {
+    console.log(`handleRun setCount`);
+    setCount((preState) => preState + 1);
   };
 
-  useEffect(() => {
-    return () => {
-      if (avatar) URL.revokeObjectURL(avatar.urlSrc);
-    };
-  }, [avatar]);
-
   return (
-    <>
-      <input type="file" onChange={handleAvatarPreview} accept="image/*" />
-      {avatar && <img src={avatar.urlSrc} alt="" width="80%" />}
-    </>
+    <div>
+      <h1>{count}</h1>
+      <button onClick={handleRun}>Run</button>
+    </div>
   );
 }
 export default Content;
+
+// Lesson: useLayoutEffect() hook?
