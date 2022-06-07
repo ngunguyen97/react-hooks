@@ -16,29 +16,20 @@
  * 5. Re-render UI
  */
 
-import { useRef, useState } from 'react';
+import { memo } from 'react';
 
-function Content() {
-  const [count, setCount] = useState(60);
-  const intervalId = useRef();
-  const handleStart = () => {
-    intervalId.current = setInterval(() => setCount((preState) => preState - 1), 1000);
-    console.log(`setInterval`, intervalId.current);
-  };
-
-  const handleStop = () => {
-    console.log(`clearInterval`, intervalId.current);
-    clearInterval(intervalId.current);
-  };
-
+function Content({ todos, addTodo }) {
+  console.log('child render');
   return (
-    <div>
-      <h1>{count}</h1>
-      <button onClick={handleStart}>Start</button>
-      <button onClick={handleStop}>Stop</button>
-    </div>
+    <>
+      <h2>My Todos</h2>
+      {todos.map((todo, index) => {
+        return <p key={index}>{todo}</p>;
+      })}
+      <button onClick={addTodo}>Add Todo</button>
+    </>
   );
 }
-export default Content;
+export default memo(Content);
 
 // Lesson: useLayoutEffect() hook?

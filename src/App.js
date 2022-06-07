@@ -1,14 +1,23 @@
-import { useState } from 'react';
+import { useState, useCallback, memo } from 'react';
 import './App.css';
 import Content from './Content';
+import Count from './Count';
 
 function App() {
-  const [toggleBtn, setToggleBtn] = useState(true);
+  const [todos, setTodos] = useState([]);
+
+  const addTodo = useCallback(() => {
+    setTodos((t) => [...t, 'New Todo']);
+  }, []);
+
   return (
-    <div className="App">
-      <button onClick={() => setToggleBtn(!toggleBtn)}>Toggle Mounted</button>
-      {toggleBtn && <Content />}
-    </div>
+    <>
+      <Content todos={todos} addTodo={addTodo} />
+      <hr />
+      <div>
+        <Count />
+      </div>
+    </>
   );
 }
 
